@@ -10,7 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <title>Aryan Music : online Music instruments selling</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="online music instrument " />
+<meta name="keywords" content="online music instrument" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
@@ -32,6 +32,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
    <!--pie-chart--->
 <script src="js/pie-chart.js" type="text/javascript"></script>
  <script type="text/javascript">
+
         $(document).ready(function () {
             $('#demo-pie-1').pieChart({
                 barColor: '#3bb2d0',
@@ -65,28 +66,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
            
         });
+
     </script>
-	<script>
-function showRSS(str) {
-  if (str.length==0) { 
-    document.getElementById("rssOutput").innerHTML="";
-    return;
-  }
-  if (window.XMLHttpRequest) {
-    // code for IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp=new XMLHttpRequest();
-  } else {  // code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("rssOutput").innerHTML=this.responseText;
-    }
-  }
-  xmlhttp.open("GET","getrss.php?q="+str,true);
-  xmlhttp.send();
-}
-</script>
+</head> 
+
 
 <body style='background-color:#ffe4e1;'>
    <div class="page-container">
@@ -97,6 +80,7 @@ function showRSS(str) {
 			<div class="header-section">
 			<!-- top_bg -->
 						<div class="top_bg">
+							
 								<div class="header_top">
 									<div class="top_right">
 										<marquee><h4>Welcome to the Aryan Music!</h4></marquee>
@@ -106,16 +90,17 @@ function showRSS(str) {
 									</div>-->
 										<div class="clearfix"> </div>
 								</div>
+							
 						</div>
 					<div class="clearfix"></div>
 				<!-- /top_bg -->
 				</div>
 				<div class="header_bg">
+						
 							<div class="header">
 								<div class="head-t">
 									<div class="logo">
 										<!--<a href="index.html"><img src="images/logo.png" class="img-responsive" alt=""> </a>-->
-											
 									</div>
 										<!-- start header_right -->
 									<div class="header_right">
@@ -124,8 +109,11 @@ function showRSS(str) {
 												
 											</div>
 											
-										<h1><font color="red"><b>  Update / Delete Academic Information </b></h1>
+										<div class="create_btn">
+											<a href="logout.php">LOGOUT</a>	
+										</div>
 										<div class="clearfix"> </div>
+										
 									</div>
 									
 									<div class="clearfix"> </div>
@@ -133,59 +121,110 @@ function showRSS(str) {
 								<div class="clearfix"> </div>
 							</div>
 						</div>
+					
 				</div>
 					<!-- //header-ends -->
+				
 				<!--content-->
-			<div class="content">
-<div class="main" style='background-color:#fffff0;'>
-						<!-- start content -->
-<div class="tab-main">
-									<!--/tabs-inner-->
-<div class="academy">
-<!--select query start-->
-<form method="POST">
+<div class="content">
+<div class="women_main" style='background-color:#fffff0'>
+	<!-- start content -->
+
+
+<table id=t02 style='align:left;'>
+		<tr>
+		<th> <label><font color="white">Category :</label> </th>
+		<th style='color:black;'><select name="cmbBranch"><font color="black">
+		
+		<option value="select" selected>Select...</option>
+		<option value="percussion">Percussion</option>
+		<option value="nonpercussion">Nonpercussion</option>
+		<option value="indian music">Indian Music Instrument</option>
+		<option value="music instrument">Music instrument</option>
+		<option value="new instrument">New Instrument</option>
+		
+	</select></th>
+	</tr>
+</table>
+
+<!--</div>-->
+<br/>
+<!--select query-->
+<div class="product">
+ <form method="POST" action="view_add_product.php" enctype="multipart/form-data">
 <?php
 if(isset($_POST['add']))
 {
-include("config.php");
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "admin_music";
+$target_folder = "uploads/";
+$target_file1 = $target_folder . basename($_FILES['pimg']['name']);
+$target_file2 = $target_folder . basename($_FILES['pimg1']['name']);
+$target_file3 = $target_folder . basename($_FILES['pimg2']['name']);
 
-	$acd_id = $_POST['acd_id'];
-	$acd_info = $_POST['acd_info'];
-	
-	$sql1 = "update `acd_info` set acd_info='$acd_info' where acd_id='$acd_id';"; 
-	
-if(mysql_query($sql1)===TRUE)
+if(move_uploaded_file($_FILES['pimg']['tmp_name'],$target_file1))
 {
-    echo "<h3>Record Updated successfully</h3>";
-	header("location:academic_info.php");
+	echo "File uploaded";
 }
-else 
+if(move_uploaded_file($_FILES['pimg1']['tmp_name'],$target_file2))
 {
-    echo "Error updating record: " .mysql_error();
+	echo "File uploaded";
 }
-mysql_close($db_handle);
+if(move_uploaded_file($_FILES['pimg2']['tmp_name'],$target_file3))
+{
+	echo "File uploaded";
 }
-?>							
-</form>
 
-<form method="POST">		
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+ 
+        $sql = "INSERT INTO `manage_product`(`subcat_id`,`pid`,`pname`,`pdisc`,`pprice`,`pimg`,`pimg1`,`pimg2`)
+		VALUES ('".$_POST["subcategory"]."','".$_POST["pid"]."','".$_POST["pname"]."','".$_POST["pdisc"]."','".$_POST["pprice"]."','$target_file1','$target_file2','$target_file3')";
+ 
+$result = $conn->query($sql);
+if ($result === TRUE)
+ {
+	 echo "new recored inserted successfully"; 
+ }
+else
+{ 
+echo "Error: " . $sql . "<br>" . $conn->error;
+}
+$conn->close();
+}
+ ?>
+
+
+<center>
+
+
 <?php
-if(isset($_GET['id']))
-{
-include("config.php");
-$id = $_GET['id'];
-	$sql1="SELECT * from acd_info where acd_id='$id'";
-	
-$result = mysql_query($sql1);
-while($row = mysql_fetch_array($result))
-{
-	$acd_id = $row['acd_id'];
-	$acd_info = $row['acd_info'];
-}
-mysql_close($db_handle);
-}
+
+$server = "localhost";
+$user_name = "root";
+$password = "";
+$dbname = "admin_music";
+
+// Create connection
+$db_handle = mysql_connect($server, $user_name, $password);
+mysql_select_db($dbname, $db_handle);
+
+	$sql1="SELECT * from subcat_master ";
+	echo $sql1;
 ?>
-</form>
+<table id=t02 style='align:left;'>
+		
+</select>
+</table>
+</center>
 
 <style>
 table
@@ -193,225 +232,257 @@ table
 	background-color:#b22222;
 	width:50%;
 	color:black;
-}
-input.text::-webkit-input-placeholder
- {
-   color: white;
-}
-
-input.text:-moz-placeholder 
-{ /* Firefox 18- */
-   color: white;  
-}
-
-input.text::-moz-placeholder 
-{  /* Firefox 19+ */
-   color: white;  
-}
-
-input.text:-ms-input-placeholder 
-{  
-   color: white;  
+	
 }
 </style>
-<form method="POST">
 <center>
-<table>
+
+ <table style='align:right;'>
 	<tr>
-		<th style='color: white;'>	
-			<label>Academy information id</label>
-		</th>
-			<td>
-				<input type='text' name='acd_id' size='50' value="<?php if(isset($_GET['id'])) { echo $acd_id;}?>">
-			</td>
+		<td> 
+			<label><font color="black">Subcategory name :</label> 
+		</td>
+<td>			
+<select name="subcategory" style='align:right;'>
+
+<?php
+$result = mysql_query($sql1);
+while($row = mysql_fetch_array($result))
+{?>
+
+		<option value="<?php echo $row['subcat_id'];?>"><?php echo $row['subcat_name'];?></option>
+		
+<?php	
+}
+mysql_close();
+?>
+</td>
+</tr>
+<script>
+function ClearFields() 
+{
+
+     document.getElementById("pid").value = "";
+     document.getElementById("pname").value = "";
+	 document.getElementById("pdisc").value = "";
+	 document.getElementById("pprice").value = "";
+	 document.getElementById("pimg").value = "";
+	 document.getElementById("pimg1").value = "";
+	  document.getElementById("pimg2").value = "";
+}
+</script>
+<table style='width:50%'>
+	<tr>
+		<td>
+			<label> Product id:</label>
+		</td>
+		<td>
+			<input type='text' name='pid'>
+		</td>
 	</tr>
-	
 	<tr>
-		<th style='color: white;'>
-			<label>Academy information:</label>
-		</th>
-			<td>
-				
-				<input type='text' name='acd_info' size='50' value="<?php if(isset($_GET['id'])) { echo $acd_info;}?>">
-			</td>
+		<td>
+			<label>Product name:</label>
+		</td>
+		<td>
+			<input type='text' name='pname'>
+		</td>
 	</tr>
-	
 	<tr>
-			<td>
-				<button type='submit' name='add'  class="button button1" style='height: 50px; width: 150px; left: 250; top: 250;'>Add</button>
-			</td>
-			<td>
-				<button type='clear' name='clear' class="button button1"  style='height: 50px; width: 150px; left: 250; top: 250;'>Cancel</button>
-			</td>
+		<td>
+			<label> Product discription:</label>
+		</td>
+		<td>
+			<input type='text' name='pdisc'>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label> Product price:</label>
+		</td>
+		<td>
+			<input type='text' name='pprice'>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label> Product image:</label>
+		</td>
+		<td>	
+			<input type='file' name='pimg'>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label> Product image1:</label>
+		</td>
+		<td>
+			<input type='file' name='pimg1'>
+		</td>
+	</tr>
+	<tr>
+		<td>	
+			<label> Product image2:</label>
+		</td>
+		<td>
+			<input type='file' name='pimg2'>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button type='submit' name='add' style='height: 30px; width: 150px; left: 250; top: 250; background-color:#d3d3d3;color:red;'>ADD</button>
+		</td>
+		<td>
+			<button type='clear' onclick='ClearFields()' name='clear' style='height: 30px; width: 150px; left: 250; top: 250; background-color:#d3d3d3;color:red;'>Cancel</button>
+		</td>
 	</tr>
 </table>
-
-</center>	
 </form>
-<br/>
-<br/>
-<center>
+</center>
 
-<form method="POST">
+<br/>
+<br/>
+
+<center>
 <style>
-table
+table, th, td 
 {
+    
 	border-collapse: collapse;
-	width:50%;
-	color:black;
+	
+}
+th, td {
+    padding: 5px;
+}
+th 
+{
+    text-align: left;
+}
+table 
+{
+    border-spacing: 2px;
 }
 table#t01 tr:nth-child(even) 
 {
     background-color: 	#808080;
 }
-table#t01 tr:nth-child(odd) 
-{
+table#t01 tr:nth-child(odd) {
     background-color:	#696969;
 }
-table#t01 th 
-{
-    color: white;
+table#t01 th {
+    color: black;
     background-color: #b22222;
 }
-.button 
-{
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
-}
-.button1 
-{
-    background-color: white; 
-    color: black; 
-    border:2px solid #000000;
-}
-.button1:hover
-{
-    background-color:black;
-    color: white;
-}
 </style>
-<form method="POST" action="delete_acd.php">
-<script>
-function ConfirmDelete()
-{
-  var x = confirm("Are you sure you want to delete?");
-  if (x)
-  {
-      return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-</script>
+
 <?PHP
-include("config.php");
-			$SQL = "SELECT * FROM acd_info";
+$user_name = "root";
+$password = "";
+$database = "admin_music";
+$server = "localhost";
+$db_handle = mysql_connect($server, $user_name, $password);
+$db_found = mysql_select_db($database, $db_handle);
+if ($db_found) {
+$SQL = "SELECT * FROM manage_product ORDER BY pid DESC";
 ?>
 
-<table id=t01 style='width:100%;'>
+<table id=t01 style='width:90%'>
 	<tr>
-		<th>Academy information id</th>
-		<th>Academy information</th>
-		
+		<th>Subcategory id</th>
+		<th>Product id</th>
+		<th>Product name</th>
+		<th>Product discription</th>
+		<th>Product price</th>
+		<th>Product image</th>
+		<th>Product image1</th>
+		<th>Product image2</th>
 	</tr>
 
 <?php
 $result = mysql_query($SQL);
-while ( $db_field = mysql_fetch_assoc($result) )
-{
+while ( $db_field = mysql_fetch_assoc($result) ) {
 ?>
 	
 	<tr>
-		<td>
-			<?php print $db_field['acd_id']; ?>
+		<td> 
+			<?php print $db_field['subcat_id'];?> 
 		</td>
-		
 		<td>
-			<?php print $db_field['acd_info']; ?>
+			<?php print $db_field['pid']; ?>
 		</td>
-		
 		<td>
-			<a href="academic_info.php?id=<?php echo $db_field['acd_id'];?>"><input type='button' name='update' value='Update'  class="button button1"  style='height: 50px; width: 150px; left: 250; top: 250; ''></a>
-		
-			<a href="delete_acd.php?id=<?php echo $db_field['acd_id'];?>"><input type='button' name='delete' value='Delete'  class="button button1" Onclick='return ConfirmDelete()'style='height: 50px; width: 150px; left: 250; top: 250; '></a>
+			<?php print $db_field['pname']; ?>
+		</td>
+		<td>
+			<?php	print $db_field['pdisc'];?>
+		</td>
+		<td>
+			<?php print $db_field['pprice'];?>
+		</td>
+		<td>
+			<?php	print $db_field['pimg'];?>
+		</td>
+		<td>
+			<?php	print $db_field['pimg1'];?>
+		</td>
+		<td>
+			<?php	print $db_field['pimg2'];?>
 		</td>
 	</tr>
+
 <?php } ?>
 
 </table>
-</form>
+
 <?php
 mysql_close($db_handle);
+}
+else 
+{
+print "Database NOT Found ";
+mysql_close($db_handle);
+}
 ?>
+</center>
 </form>
-</div>	
-<!-- select query coding over-->
 
-<!--delete query coding over-->
-</div>		
 </div>
-												<!-- /tabs -->
-											</div>
-										<script src="js/cbpFWTabs.js"></script>
-									<script>
-										new CBPFWTabs( document.getElementById( 'tabs' ) );
-									</script>
-										
-												<script>
-													$(function() {
-														$('.tabs nav a').on('click', function() {
-														show_content($(this).index());
-														});
-														show_content(0);
 
-														function show_content(index) {
-														// Make the content visible
-																$('.tabs .context.visible').removeClass('visible');
-																$('.tabs .context:nth-of-type(' + (index + 1) + ')').addClass('visible');
 
-														// Set the tab to selected
-																$('.tabs nav.second a.selected').removeClass('selected');
-																$('.tabs navnav.second a:nth-of-type(' + (index + 1) + ')').addClass('selected');
-																	}
-																});
-												</script>		
-									</div>		
-									
-										<div class="clearfix"> </div>
-								</div>
-							</div>
+<!--select query over-->
+
+<!--insert query start-->
+</div>
+</div>
+	<!-- grid_of_5-->
+<div class="clearfix"></div>
 	<!-- end content -->
 	
-	<div class="clearfix"> </div>
-</div>
-		<div class="footer">
+<div class="footer">
 					<div class="col-md-3 cust">
+						<h4>CUSTOMER CARE</h4>
+							<li><a href="contact.html">Help Center</a></li>
+							<li><a href="checkout.html">Delivery</a></li>
 					</div>
 					<div class="col-md-2 abt">
 						<h4>ABOUT US</h4>
-							<li><a href="report.php">Report</a></li>
+							<li><a href="products.html">Our Stories</a></li>
+							<li><a href="contact.html">Contact</a></li>
+							<li><a href="checkout.html">Report</a></li>
 					</div>
 					<div class="col-md-2 myac">
 						<h4>MY ACCOUNT</h4>
-							<li><a href="order_history.php">Order History</a></li>
-						</div>
+							<li><a href="register.html">Register</a></li>
+							
+							<li><a href="checkout.html">Order History</a></li>
+							<li><a href="details.html">Payment</a></li>
+					</div>
 					<div class="col-md-5 our-st">
 						<div class="our-left">
 							<h4>Location</h4>
 						</div>
-						<li><i class="add"> </i>B-211,Lane No:4<br/>
+						
+							<li><i class="add"> </i>B-211,Lane No:4<br/>
 													Sethi Nagar,<br/>
 													Ujjain,<br/>
 													Madhya Pradesh<br/>
@@ -421,9 +492,10 @@ mysql_close($db_handle);
 							<li><a href="abhijit.composer@gmail.com"><i class="mail"> </i>abhijit.composer@gmail.com </a></li>
 					</div>
 					<div class="clearfix"> </div>
-						<p>© 2018 Musical Instruments Portal| Design by  Mittal Parmar Bhatiya</a></p>
+						<p>© 2018 Musical Instruments Portal| Design by Parmar Mittal</a></p>
 			</div>
 </div>
+
 </div>
 			<!--content-->
 		</div>
@@ -436,36 +508,33 @@ mysql_close($db_handle);
 					</header>
 						<div style="border-top:1px ridge rgba(255, 255, 255, 0.15)"></div>
                            <div class="menu">
-									<ul id="menu" >
-										
-										
-										 <li id="menu-academico" ><a href="#"> <span> Manage Category</span> </a>
-										 <ul id="menu-academico-sub" >
-										  <li><a href="add_cat.php">Add Category</a>
-										  <li><a href="update_delete_cat.php">Update/Delete category</a></li>
-										</ul>
+								<ul id="menu" >
+										<li><a href="index.php"> <span>Home</span></a></li>
+										<li id="menu-academico" ><a href="#"> <span> Manage Category</span> </a>
+											<ul id="menu-academico-sub" >
+												<li><a href="add_cat.php">Add Category</a>
+												<li><a href="update_delete_cat.php">Update/Delete category</a></li>
+											</ul>
 										</li>
 										<li id="menu-academico" ><a href="#"> <span> Manage Subcategory</span> </a>
-										<ul id="menu-academico-sub" >
-											<li><a href="add_subcat.php">Add Subcategory</a></li>
-											<li><a href="update_delete_subcat.php">Update/Delete Subcategory</a></li>
-										</ul>
+											<ul id="menu-academico-sub" >
+												<li><a href="add_subcat.php">Add Subcategory</a></li>
+												<li><a href="update_delete_subcat.php">Update/Delete Subcategory</a></li>
+											</ul>
 										</li>
 										</li>
-										 <li><a href="report.php"><span>Report</span></a></li>
-									<li><a href="manage_feedback.php"><span>Manage Feedback</span></a></li>
+										<li><a href="report.html"><span>Report</span></a></li>
+										<li><a href="manage_feedback.php"><span>Manage Feedback</span></a></li>
+										<li id="menu-academico-sub"><a href="#"><span>Manage Product</span></a>
+											<ul id="menu-academico-sub" >
+												<li><a href="view_add_product.php">View/Add Product</a></li>
+												<li><a href="update_delete_product.php">Update/Delete Product</a></li>
+											</ul>
+										</li>
+										<li><a href="academic_info.php"><span>Manage Academic Information</span></a> </li>
+										<li><a href="candidate_data.php"><span>Manage Candidate Data</span></a> </li>
 									
-									<li id="menu-academico-sub"><a href="#"><span>Manage Product</span></a>
-									<ul id="menu-academico-sub" >
-										  <li><a href="view_product.php">View/Add Product</a></li>
-										  <li><a href="update_delete_product.php">Update/Delete Product</a></li>
-									</ul>
-									</li>
-									 <li><a href="academic_info.php"><span>Manage Academic Information</span></a> </li>
-									 <li><a href="candidate_data.php"><span>Manage Candidate Data</span></a> </li>
-										<li><a href="logout.php"><span>Log out</span></a> </li>
-									
-								  </ul>
+								</ul>
 								</div>
 							  </div>
 							  <div class="clearfix"></div>	
@@ -499,6 +568,7 @@ mysql_close($db_handle);
    <!-- real-time -->
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 	<script type="text/javascript">
+
 	$(function() {
 
 		// We use an inline data source in the example, usually data would
@@ -588,6 +658,7 @@ mysql_close($db_handle);
 <!-- /real-time -->
 <script src="js/jquery.fn.gantt.js"></script>
     <script>
+
 		$(function() {
 
 			"use strict";
@@ -703,6 +774,7 @@ mysql_close($db_handle);
 			prettyPrint();
 
 		});
+
     </script>
 		   <script src="js/menu_jquery.js"></script>
 </body>

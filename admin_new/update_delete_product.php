@@ -10,7 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <title>Aryan Music : online Music instruments selling</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="online music instrument " />
+<meta name="keywords" content="online music instrument" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
@@ -32,6 +32,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
    <!--pie-chart--->
 <script src="js/pie-chart.js" type="text/javascript"></script>
  <script type="text/javascript">
+
         $(document).ready(function () {
             $('#demo-pie-1').pieChart({
                 barColor: '#3bb2d0',
@@ -65,29 +66,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
            
         });
-    </script>
-	<script>
-function showRSS(str) {
-  if (str.length==0) { 
-    document.getElementById("rssOutput").innerHTML="";
-    return;
-  }
-  if (window.XMLHttpRequest) {
-    // code for IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp=new XMLHttpRequest();
-  } else {  // code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("rssOutput").innerHTML=this.responseText;
-    }
-  }
-  xmlhttp.open("GET","getrss.php?q="+str,true);
-  xmlhttp.send();
-}
-</script>
 
+    </script>
+</head> 
 <body style='background-color:#ffe4e1;'>
    <div class="page-container">
    <!--/content-inner-->
@@ -97,35 +78,34 @@ function showRSS(str) {
 			<div class="header-section">
 			<!-- top_bg -->
 						<div class="top_bg">
+							
 								<div class="header_top">
 									<div class="top_right">
 										<marquee><h4>Welcome to the Aryan Music!</h4></marquee>
 									</div>
-									<!--<div class="top_left">
-										<h2><span></span> Call us : 032 2352 782</h2>
-									</div>-->
+									
 										<div class="clearfix"> </div>
 								</div>
+							
 						</div>
 					<div class="clearfix"></div>
 				<!-- /top_bg -->
 				</div>
 				<div class="header_bg">
-							<div class="header">
-								<div class="head-t">
-									<div class="logo">
-										<!--<a href="index.html"><img src="images/logo.png" class="img-responsive" alt=""> </a>-->
-											
-									</div>
+						
+						<div class="header">
+							<div class="head-t">
+									
 										<!-- start header_right -->
 									<div class="header_right">
 										<div class="rgt-bottom">
-											<div class="log">
-												
-											</div>
+											<h1><font color="red"><b> Update / Delete Product </b></h1>
 											
-										<h1><font color="red"><b>  Update / Delete Academic Information </b></h1>
+										
+											
+										</div>
 										<div class="clearfix"> </div>
+										
 									</div>
 									
 									<div class="clearfix"> </div>
@@ -133,59 +113,108 @@ function showRSS(str) {
 								<div class="clearfix"> </div>
 							</div>
 						</div>
+					
 				</div>
 					<!-- //header-ends -->
+				
 				<!--content-->
-			<div class="content">
-<div class="main" style='background-color:#fffff0;'>
-						<!-- start content -->
-<div class="tab-main">
-									<!--/tabs-inner-->
-<div class="academy">
-<!--select query start-->
-<form method="POST">
+<div class="content">
+<div class="women_main" style='background-color:#fffff0;'>
+	<!-- start content -->
+
+
+<br/>
+<form method="POST"action="update_delete_product.php" enctype="multipart/form-data">
 <?php
-if(isset($_POST['add']))
+if(isset($_POST['edit']))
 {
 include("config.php");
+$target_folder = "uploads/";
+$target_file4 = $target_folder . basename($_FILES['target_file4']['name']);
 
-	$acd_id = $_POST['acd_id'];
-	$acd_info = $_POST['acd_info'];
+if(move_uploaded_file($_FILES['target_file4']['tmp_name'], $target_file4)) 
+{
+	echo "File uploaded";
+  
+}
+else
+{
+	echo "File upload error===".mysql_error();
+}
+
+$target_file1 = $target_folder . basename($_FILES['target_file1']['name']);
+$target_file2 = $target_folder . basename($_FILES['target_file2']['name']);
+$target_file3 = $target_folder . basename($_FILES['target_file3']['name']);
+
+if(move_uploaded_file($_FILES['target_file1']['tmp_name'],$target_file1))
+{
+	echo "File uploaded";
+}
+if(move_uploaded_file($_FILES['target_file2']['tmp_name'],$target_file2))
+{
+	echo "File uploaded";
+}
+if(move_uploaded_file($_FILES['target_file3']['tmp_name'],$target_file3))
+{
+	echo "File uploaded";
+}
+
+	$pid    = $_POST['pid'];
+	$pname  = $_POST['pname'];
+	$pdisc  = $_POST['pdisc'];
+	$pprice = $_POST['pprice'];
+	echo $target_file1;
+	echo $target_file2;
+	echo $target_file3;
+	echo $target_file4;
 	
-	$sql1 = "update `acd_info` set acd_info='$acd_info' where acd_id='$acd_id';"; 
+	$sql = "UPDATE `manage_product` set pname='$pname',pdisc='$pdisc',pprice='$pprice',pimg='$target_file1',pimg1='$target_file2',pimg2='$target_file3',audio='$target_file4' where pid='$pid'"; 
 	
-if(mysql_query($sql1)===TRUE)
+	
+	
+
+if(mysql_query($sql)===TRUE)
 {
     echo "<h3>Record Updated successfully</h3>";
-	header("location:academic_info.php");
+	header( 'Location: update_delete_product.php' ) ;
 }
 else 
 {
-    echo "Error updating record: " .mysql_error();
+    echo "Error updating record: " . mysql_error();
 }
+
 mysql_close($db_handle);
 }
-?>							
+?>
 </form>
 
-<form method="POST">		
+<form method="POST" enctype="multipart/form-data">		
 <?php
 if(isset($_GET['id']))
 {
 include("config.php");
 $id = $_GET['id'];
-	$sql1="SELECT * from acd_info where acd_id='$id'";
-	
+
+				$sql1="SELECT * from manage_product where pid='$id'";
+
 $result = mysql_query($sql1);
 while($row = mysql_fetch_array($result))
 {
-	$acd_id = $row['acd_id'];
-	$acd_info = $row['acd_info'];
+	$pid = $row['pid'];
+	$pname = $row['pname'];
+	$pdisc = $row['pdisc'];
+	$pprice = $row['pprice'];
+	$target_file1=$row['pimg'];
+	$target_file2=$row['pimg1'];
+	$target_file3=$row['pimg2'];
+	$target_file4=$row['audio'];
 }
-mysql_close($db_handle);
+
+mysql_close();
 }
 ?>
 </form>
+<!-- update query start-->
 
 <style>
 table
@@ -193,88 +222,149 @@ table
 	background-color:#b22222;
 	width:50%;
 	color:black;
-}
-input.text::-webkit-input-placeholder
- {
-   color: white;
-}
-
-input.text:-moz-placeholder 
-{ /* Firefox 18- */
-   color: white;  
-}
-
-input.text::-moz-placeholder 
-{  /* Firefox 19+ */
-   color: white;  
-}
-
-input.text:-ms-input-placeholder 
-{  
-   color: white;  
+	
 }
 </style>
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
+<script>
+function ClearFields() 
+{
+
+     document.getElementById("pid").value = "";
+     document.getElementById("pname").value = "";
+	 document.getElementById("pdisc").value = "";
+	 document.getElementById("pprice").value = "";
+	 document.getElementById("target_file1").value = "";
+	 document.getElementById("target_file2").value = "";
+	  document.getElementById("target_file3").value = "";
+	  document.getElementById("target_file4").value = "";
+}
+</script>
 <center>
 <table>
 	<tr>
-		<th style='color: white;'>	
-			<label>Academy information id</label>
-		</th>
-			<td>
-				<input type='text' name='acd_id' size='50' value="<?php if(isset($_GET['id'])) { echo $acd_id;}?>">
-			</td>
+		<td style='color: white;'>	
+			<label> Product id:</label>
+		</td>
+		<td>
+			<input type='text' name='pid' value="<?php if(isset($_GET['id'])) { echo $pid;}?>">
+		</td>
 	</tr>
 	
 	<tr>
-		<th style='color: white;'>
-			<label>Academy information:</label>
-		</th>
-			<td>
-				
-				<input type='text' name='acd_info' size='50' value="<?php if(isset($_GET['id'])) { echo $acd_info;}?>">
-			</td>
+		<td style='color: white;'>
+			<label>Product name:</label>
+		</td>
+		<td>
+			<input type='text' name='pname' value="<?php if(isset($_GET['id'])) { echo $pname;}?>">
+		</td>
 	</tr>
 	
 	<tr>
-			<td>
-				<button type='submit' name='add'  class="button button1" style='height: 50px; width: 150px; left: 250; top: 250;'>Add</button>
-			</td>
-			<td>
-				<button type='clear' name='clear' class="button button1"  style='height: 50px; width: 150px; left: 250; top: 250;'>Cancel</button>
-			</td>
+		<td style='color: white;'>
+			<label>Product Discription:</label>
+		</td>
+		<td>
+			<input type='text' name='pdisc' value="<?php if(isset($_GET['id'])) { echo $pdisc;}?>">
+		</td>
+	</tr>
+	
+	<tr>
+		<td style='color: white;'>
+			<label>Product price:</label>
+		</td>
+		<td>
+			<input type='text' name='pprice' value="<?php if(isset($_GET['id'])) { echo $pprice;}?>">Rs.
+		</td>
+	</tr>
+	
+	<tr>
+		<td style='color: white;'>
+			<label>Product image:</label>
+		</td>
+		<td>
+			<input type='file' name='target_file1' value="<?php if(isset($_GET['id'])) { echo $target_file1 ;}?>" required=""/>
+			<img src="<?php if(isset($_GET['id'])) { echo $target_file1 ;}?>" width="100" height="100"></img>
+		</td>
+	</tr>
+	
+	<tr>
+		<td style='color: white;'>
+			<label>Product image1:</label>
+		</td>
+		<td>
+			<input type='file' name='target_file2' value="<?php if(isset($_GET['id'])) { echo $target_file2 ;}?>"/><img src="<?php if(isset($_GET['id'])) { echo $target_file2 ;}?>" width="100" height="100"></img>
+		</td>
+	</tr>
+	
+	<tr>
+		<td style='color: white;'>
+			<label>Product image2:</label>
+		</td>
+		<td>
+			<input type='file' name='target_file3' value="<?php if(isset($_GET['id'])) { echo $target_file3 ;}?>"/><img src="<?php if(isset($_GET['id'])) { echo $target_file3 ;}?>" width="100" height="100"></img>
+		</td>
+	</tr>
+	
+	<tr>
+		<td style='color: white;'>
+			<label>Audio:</label>
+		</td>
+		<td>
+			<input type='file' name='target_file4' value="<?php if(isset($_GET['id'])) { echo $target_file4 ;}?>" /><audio controls src="<?php if(isset($_GET['id'])) { echo $target_file4 ;}?>"></audio>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<button type='submit' name='edit'  class="button button1"style='height: 50px; width: 150px; left: 250; top: 250; '>Add</button>
+		</td>
+		<td>
+			<button type='clear' onclick='ClearFields()'  class="button button1" name='clear' style='height: 50px; width: 150px; left: 250; top: 250;'>Cancel</button>
+		</td>
 	</tr>
 </table>
-
-</center>	
+</center>
 </form>
+<!-- update query over-->
+<!--select query coding-->
 <br/>
 <br/>
-<center>
 
-<form method="POST">
+
+<center>
 <style>
-table
+table, th, td 
 {
+    
 	border-collapse: collapse;
-	width:50%;
-	color:black;
+}
+th, td 
+{
+    padding: 5px;
+}
+th 
+{
+    text-align: left;
+}
+table 
+{
+    border-spacing: 2px;
 }
 table#t01 tr:nth-child(even) 
 {
-    background-color: 	#808080;
+    background-color:#d3d3d3;
 }
 table#t01 tr:nth-child(odd) 
 {
-    background-color:	#696969;
+    background-color:white;
 }
 table#t01 th 
 {
-    color: white;
+    color:white;
     background-color: #b22222;
 }
-.button 
-{
+.button {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -288,19 +378,20 @@ table#t01 th
     transition-duration: 0.4s;
     cursor: pointer;
 }
-.button1 
-{
+.button1
+ {
     background-color: white; 
     color: black; 
-    border:2px solid #000000;
+    border: 2px solid #000000;
 }
-.button1:hover
+
+.button1:hover 
 {
-    background-color:black;
+    background-color:#000000;
     color: white;
 }
 </style>
-<form method="POST" action="delete_acd.php">
+<form method="POST"action="delete_product.php">
 <script>
 function ConfirmDelete()
 {
@@ -317,86 +408,104 @@ function ConfirmDelete()
 </script>
 <?PHP
 include("config.php");
-			$SQL = "SELECT * FROM acd_info";
+			$SQL = "SELECT * FROM manage_product ORDER BY pid DESC";
 ?>
 
-<table id=t01 style='width:100%;'>
+<table id=t01 style='width:50%;'>
 	<tr>
-		<th>Academy information id</th>
-		<th>Academy information</th>
-		
+		<th>Subcategory id</th>
+		<th>Product id</th>
+		<th>Product name</th>
+		<th>product discription</th>
+		<th>product price(Rs.)</th>
+		<th>product image</th>
+		<th>product image1</th>
+		<th>product image2</th>
+		<th>Audio</th>
 	</tr>
+
 
 <?php
 $result = mysql_query($SQL);
-while ( $db_field = mysql_fetch_assoc($result) )
+while ( $db_field = mysql_fetch_assoc($result)) 
 {
 ?>
 	
 	<tr>
 		<td>
-			<?php print $db_field['acd_id']; ?>
+				<?php print $db_field['subcat_id'];?>
 		</td>
 		
 		<td>
-			<?php print $db_field['acd_info']; ?>
+				<?php print $db_field['pid'];?>
 		</td>
 		
 		<td>
-			<a href="academic_info.php?id=<?php echo $db_field['acd_id'];?>"><input type='button' name='update' value='Update'  class="button button1"  style='height: 50px; width: 150px; left: 250; top: 250; ''></a>
+				<?php print $db_field['pname'];?>
+		</td>
 		
-			<a href="delete_acd.php?id=<?php echo $db_field['acd_id'];?>"><input type='button' name='delete' value='Delete'  class="button button1" Onclick='return ConfirmDelete()'style='height: 50px; width: 150px; left: 250; top: 250; '></a>
+		<td>
+				<?php print $db_field['pdisc'];?>
+		</td>
+		
+		<td>
+				 <?php print $db_field['pprice'];?>
+		</td>
+		
+		<td>
+				<img src="<?php echo $db_field['pimg']; ?>" width="100" height="75"/></img>
+		</td>
+		
+		<td>
+				<img src="<?php echo $db_field['pimg1']; ?>" width="100" height="75"/></img>
+		</td>
+		
+		<td>
+				<img src="<?php echo $db_field['pimg2']; ?>" width="100" height="75"/></img>
+		</td>
+		
+		<td>
+				<?php print $db_field['audio'];?>
+		</td>
+		
+		<td>
+				<a href="update_delete_product.php?id=<?php echo $db_field['pid'];?>"><input type='button' name='update' class="button button1" value='Update' style='height: 50px; width: 100px;  '></a>
+		</td>
+		
+		<td>		
+				<a href="delete_product.php?id=<?php echo $db_field['pid'];?>"><input type='button' name='delete'  class="button button1" Onclick='return ConfirmDelete()' value='Delete' style='height: 50px; width: 100px; '>
 		</td>
 	</tr>
+
 <?php } ?>
 
 </table>
-</form>
+
 <?php
 mysql_close($db_handle);
 ?>
 </form>
-</div>	
-<!-- select query coding over-->
 
-<!--delete query coding over-->
-</div>		
+</center>
+<br/>
+
+
 </div>
-												<!-- /tabs -->
-											</div>
-										<script src="js/cbpFWTabs.js"></script>
-									<script>
-										new CBPFWTabs( document.getElementById( 'tabs' ) );
-									</script>
-										
-												<script>
-													$(function() {
-														$('.tabs nav a').on('click', function() {
-														show_content($(this).index());
-														});
-														show_content(0);
 
-														function show_content(index) {
-														// Make the content visible
-																$('.tabs .context.visible').removeClass('visible');
-																$('.tabs .context:nth-of-type(' + (index + 1) + ')').addClass('visible');
-
-														// Set the tab to selected
-																$('.tabs nav.second a.selected').removeClass('selected');
-																$('.tabs navnav.second a:nth-of-type(' + (index + 1) + ')').addClass('selected');
-																	}
-																});
-												</script>		
-									</div>		
-									
-										<div class="clearfix"> </div>
-								</div>
-							</div>
-	<!-- end content -->
+</div>
 	
-	<div class="clearfix"> </div>
+	
+	
+	
+<div class="clearfix"></div>
+	<!-- end content -->
+<div class="foot-top">
+	
+		
+<div class="clearfix"> </div>
+	
 </div>
-		<div class="footer">
+<div class="footer">
 					<div class="col-md-3 cust">
 					</div>
 					<div class="col-md-2 abt">
@@ -411,7 +520,8 @@ mysql_close($db_handle);
 						<div class="our-left">
 							<h4>Location</h4>
 						</div>
-						<li><i class="add"> </i>B-211,Lane No:4<br/>
+						
+							<li><i class="add"> </i>B-211,Lane No:4<br/>
 													Sethi Nagar,<br/>
 													Ujjain,<br/>
 													Madhya Pradesh<br/>
@@ -424,6 +534,7 @@ mysql_close($db_handle);
 						<p>© 2018 Musical Instruments Portal| Design by  Mittal Parmar Bhatiya</a></p>
 			</div>
 </div>
+
 </div>
 			<!--content-->
 		</div>
@@ -438,7 +549,6 @@ mysql_close($db_handle);
                            <div class="menu">
 									<ul id="menu" >
 										
-										
 										 <li id="menu-academico" ><a href="#"> <span> Manage Category</span> </a>
 										 <ul id="menu-academico-sub" >
 										  <li><a href="add_cat.php">Add Category</a>
@@ -452,18 +562,17 @@ mysql_close($db_handle);
 										</ul>
 										</li>
 										</li>
-										 <li><a href="report.php"><span>Report</span></a></li>
+									<li><a href="report.php"><span>Report</span></a></li>
 									<li><a href="manage_feedback.php"><span>Manage Feedback</span></a></li>
-									
 									<li id="menu-academico-sub"><a href="#"><span>Manage Product</span></a>
 									<ul id="menu-academico-sub" >
 										  <li><a href="view_product.php">View/Add Product</a></li>
 										  <li><a href="update_delete_product.php">Update/Delete Product</a></li>
 									</ul>
 									</li>
-									 <li><a href="academic_info.php"><span>Manage Academic Information</span></a> </li>
+									<li><a href="academic_info.php"><span>Manage Academic Information</span></a> </li>
 									 <li><a href="candidate_data.php"><span>Manage Candidate Data</span></a> </li>
-										<li><a href="logout.php"><span>Log out</span></a> </li>
+									<li><a href="logout.php"><span>Log out</span></a> </li>
 									
 								  </ul>
 								</div>
@@ -499,6 +608,7 @@ mysql_close($db_handle);
    <!-- real-time -->
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 	<script type="text/javascript">
+
 	$(function() {
 
 		// We use an inline data source in the example, usually data would
@@ -588,6 +698,7 @@ mysql_close($db_handle);
 <!-- /real-time -->
 <script src="js/jquery.fn.gantt.js"></script>
     <script>
+
 		$(function() {
 
 			"use strict";
@@ -703,6 +814,7 @@ mysql_close($db_handle);
 			prettyPrint();
 
 		});
+
     </script>
 		   <script src="js/menu_jquery.js"></script>
 </body>

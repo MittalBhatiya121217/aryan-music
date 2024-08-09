@@ -10,7 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <title>Aryan Music : online Music instruments selling</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="online music instrument " />
+<meta name="keywords" content="online music instrument" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
@@ -32,6 +32,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
    <!--pie-chart--->
 <script src="js/pie-chart.js" type="text/javascript"></script>
  <script type="text/javascript">
+
         $(document).ready(function () {
             $('#demo-pie-1').pieChart({
                 barColor: '#3bb2d0',
@@ -65,28 +66,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
            
         });
+
     </script>
-	<script>
-function showRSS(str) {
-  if (str.length==0) { 
-    document.getElementById("rssOutput").innerHTML="";
-    return;
-  }
-  if (window.XMLHttpRequest) {
-    // code for IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp=new XMLHttpRequest();
-  } else {  // code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("rssOutput").innerHTML=this.responseText;
-    }
-  }
-  xmlhttp.open("GET","getrss.php?q="+str,true);
-  xmlhttp.send();
-}
-</script>
+</head>
 
 <body style='background-color:#ffe4e1;'>
    <div class="page-container">
@@ -97,25 +79,27 @@ function showRSS(str) {
 			<div class="header-section">
 			<!-- top_bg -->
 						<div class="top_bg">
+							
 								<div class="header_top">
 									<div class="top_right">
 										<marquee><h4>Welcome to the Aryan Music!</h4></marquee>
-									</div>
-									<!--<div class="top_left">
+									
+										<!--<div class="top_left">
 										<h2><span></span> Call us : 032 2352 782</h2>
-									</div>-->
-										<div class="clearfix"> </div>
+										</div>-->
+										
+									</div>
+							
 								</div>
+								<div class="clearfix"></div>
+							<!-- /top_bg -->
 						</div>
-					<div class="clearfix"></div>
-				<!-- /top_bg -->
-				</div>
 				<div class="header_bg">
+						
 							<div class="header">
 								<div class="head-t">
 									<div class="logo">
 										<!--<a href="index.html"><img src="images/logo.png" class="img-responsive" alt=""> </a>-->
-											
 									</div>
 										<!-- start header_right -->
 									<div class="header_right">
@@ -124,7 +108,9 @@ function showRSS(str) {
 												
 											</div>
 											
-										<h1><font color="red"><b>  Update / Delete Academic Information </b></h1>
+										
+											<h1><font color="red"><b> Add Subcategory </b></h1>
+										
 										<div class="clearfix"> </div>
 									</div>
 									
@@ -133,148 +119,174 @@ function showRSS(str) {
 								<div class="clearfix"> </div>
 							</div>
 						</div>
+					
 				</div>
 					<!-- //header-ends -->
+				
 				<!--content-->
 			<div class="content">
 <div class="main" style='background-color:#fffff0;'>
-						<!-- start content -->
-<div class="tab-main">
-									<!--/tabs-inner-->
-<div class="academy">
-<!--select query start-->
-<form method="POST">
+	<!-- start content -->
+
+   <div class="w_content">
+		
+		     <div class="clearfix"></div>	
+		</div>
+		
+
+<br/>
+<br/>
 <?php
+include("config.php");
+  
+		$sql="select MAX(subcat_id) 'cnt' from subcat_master";
+
+$result = mysql_query($sql);
+while ($db_field = mysql_fetch_assoc($result) ) 
+{
+	$cnt = $db_field['cnt'];
+}
+
+$cnt = $cnt + 1;
 if(isset($_POST['add']))
 {
-include("config.php");
 
-	$acd_id = $_POST['acd_id'];
-	$acd_info = $_POST['acd_info'];
-	
-	$sql1 = "update `acd_info` set acd_info='$acd_info' where acd_id='$acd_id';"; 
-	
-if(mysql_query($sql1)===TRUE)
+	$sname = $_POST['subcat_name'];
+	$s="select * from subcat_master where subcat_name='$sname'";
+
+$res = mysql_query($s);
+$count = mysql_num_rows($res);
+if($count==0)
 {
-    echo "<h3>Record Updated successfully</h3>";
-	header("location:academic_info.php");
-}
+		$sql = "INSERT INTO `subcat_master`(cat_id,`subcat_id`, `subcat_name`)VALUES ('".$_POST["category"]."','".$_POST["subcat_id"]."','".$_POST["subcat_name"]."')";
+ 
+$result = mysql_query($sql);
+if ($result)
+{
+    echo "<h4><br>New record created successfully<br></h4>";
+	
+} 
 else 
 {
-    echo "Error updating record: " .mysql_error();
+    echo "Error: " . $sql . "<br>" . mysql_error();
+}
+}
+else
+{
+	echo "<h4><font color='red'><center>Subcategory already exists</center></h4>";
 }
 mysql_close($db_handle);
 }
-?>							
-</form>
+ ?> 
 
-<form method="POST">		
+<form action="add_subcat.php" method="POST">
+<center>
 <?php
-if(isset($_GET['id']))
-{
 include("config.php");
-$id = $_GET['id'];
-	$sql1="SELECT * from acd_info where acd_id='$id'";
-	
-$result = mysql_query($sql1);
-while($row = mysql_fetch_array($result))
-{
-	$acd_id = $row['acd_id'];
-	$acd_info = $row['acd_info'];
-}
-mysql_close($db_handle);
-}
+	$sql1="SELECT * from cat_master ";
 ?>
-</form>
 
+<table id=t02 style='align:left;'>
 <style>
 table
 {
 	background-color:#b22222;
 	width:50%;
-	color:black;
-}
-input.text::-webkit-input-placeholder
- {
-   color: white;
-}
-
-input.text:-moz-placeholder 
-{ /* Firefox 18- */
-   color: white;  
-}
-
-input.text::-moz-placeholder 
-{  /* Firefox 19+ */
-   color: white;  
-}
-
-input.text:-ms-input-placeholder 
-{  
-   color: white;  
+	
 }
 </style>
-<form method="POST">
+
+<script>
+function ClearFields() 
+{
+
+     document.getElementById("subcat_id").value = "";
+     document.getElementById("subcat_name").value = "";
+	 
+}
+</script>
+
 <center>
+<form action="add_subcat.php" method="POST">
 <table>
 	<tr>
-		<th style='color: white;'>	
-			<label>Academy information id</label>
-		</th>
-			<td>
-				<input type='text' name='acd_id' size='50' value="<?php if(isset($_GET['id'])) { echo $acd_id;}?>">
-			</td>
+		<td> 
+			<label><font color="black" style='color: white;'>Category name :</label> 
+		</td>
+		<td>			
+			<select name="category">
+<?php
+$result = mysql_query($sql1);
+while($row = mysql_fetch_array($result))
+{?>
+
+			<option value="<?php echo $row['cat_id'];?>"><?php echo $row['cat_name'];?></option>
+		
+<?php	
+}
+mysql_close($db_handle);
+?>
+
+		</td>
 	</tr>
-	
 	<tr>
-		<th style='color: white;'>
-			<label>Academy information:</label>
-		</th>
-			<td>
-				
-				<input type='text' name='acd_info' size='50' value="<?php if(isset($_GET['id'])) { echo $acd_info;}?>">
-			</td>
+		<td style='color: white;'>
+				<label> Subcategory id:</label>
+		</td>
+		<td>
+				<input type='text' name='subcat_id' value='<?php echo $cnt; ?>'>
+		</td>
 	</tr>
-	
 	<tr>
-			<td>
-				<button type='submit' name='add'  class="button button1" style='height: 50px; width: 150px; left: 250; top: 250;'>Add</button>
-			</td>
-			<td>
-				<button type='clear' name='clear' class="button button1"  style='height: 50px; width: 150px; left: 250; top: 250;'>Cancel</button>
-			</td>
+		<td style='color: white;'>
+				<label>Subcategory name:</label>
+		</td>
+		<td>
+				<input type='text' name='subcat_name' required="" >
+		</td>
+	<tr>
+		<td>
+				<button  type='submit' class="button button1" name='add' style='height: 50px; width: 150px; left: 250; top: 250;'>Add</button>
+		</td>
+		<td>
+				<button type='clear'  class="button button1"onclick='ClearFields()' name='clear' style='height: 50px; width: 150px; left: 250; top: 250; ' >Cancel</button>
+		</td>
 	</tr>
 </table>
-
-</center>	
 </form>
 <br/>
 <br/>
-<center>
 
-<form method="POST">
 <style>
-table
+table, th, td 
 {
-	border-collapse: collapse;
-	width:50%;
-	color:black;
+	color: black;
+    border-collapse: collapse;
+}
+th, td
+ {
+    padding: 10px;
+}
+th
+ {
+    text-align: left;
+}
+table
+ {
+    border-spacing: 3px;
 }
 table#t01 tr:nth-child(even) 
 {
-    background-color: 	#808080;
+    background-color:#d3d3d3;
 }
-table#t01 tr:nth-child(odd) 
-{
-    background-color:	#696969;
+table#t01 tr:nth-child(odd) {
+    background-color:	white;
 }
-table#t01 th 
-{
+table#t01 th {
     color: white;
     background-color: #b22222;
 }
-.button 
-{
+.button {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -288,115 +300,60 @@ table#t01 th
     transition-duration: 0.4s;
     cursor: pointer;
 }
-.button1 
-{
+.button1 {
     background-color: white; 
     color: black; 
-    border:2px solid #000000;
+    border: 2px solid #000000;
 }
-.button1:hover
-{
-    background-color:black;
+
+.button1:hover {
+    background-color:#000000;
     color: white;
 }
 </style>
-<form method="POST" action="delete_acd.php">
-<script>
-function ConfirmDelete()
-{
-  var x = confirm("Are you sure you want to delete?");
-  if (x)
-  {
-      return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-</script>
+
 <?PHP
 include("config.php");
-			$SQL = "SELECT * FROM acd_info";
+if ($db_found) 
+{
+	$SQL = "SELECT * FROM subcat_master order by subcat_id desc";
 ?>
 
-<table id=t01 style='width:100%;'>
+<table id=t01 style='width:50%'>
 	<tr>
-		<th>Academy information id</th>
-		<th>Academy information</th>
-		
+		<th>Category id</th>
+		<th>Subcategory id</th>
+		<th>Subcategory name</th>
 	</tr>
 
 <?php
 $result = mysql_query($SQL);
-while ( $db_field = mysql_fetch_assoc($result) )
+while ( $db_field = mysql_fetch_assoc($result) ) 
 {
 ?>
-	
 	<tr>
-		<td>
-			<?php print $db_field['acd_id']; ?>
-		</td>
-		
-		<td>
-			<?php print $db_field['acd_info']; ?>
-		</td>
-		
-		<td>
-			<a href="academic_info.php?id=<?php echo $db_field['acd_id'];?>"><input type='button' name='update' value='Update'  class="button button1"  style='height: 50px; width: 150px; left: 250; top: 250; ''></a>
-		
-			<a href="delete_acd.php?id=<?php echo $db_field['acd_id'];?>"><input type='button' name='delete' value='Delete'  class="button button1" Onclick='return ConfirmDelete()'style='height: 50px; width: 150px; left: 250; top: 250; '></a>
-		</td>
+		<td> <?php print $db_field['cat_id'];?> </td>
+		<td> <?php print $db_field['subcat_id'];?> </td>
+		<td> <?php print $db_field['subcat_name'];?> </td>
 	</tr>
-<?php } ?>
-
+<?php  
+}
+?>
 </table>
-</form>
+
 <?php
 mysql_close($db_handle);
+}
 ?>
-</form>
-</div>	
-<!-- select query coding over-->
+</center>		
+<!--select query over-->
+<!--insert subcat -->
 
-<!--delete query coding over-->
-</div>		
+
+<div class="clearfix"></div>
+<!-- end content -->
 </div>
-												<!-- /tabs -->
-											</div>
-										<script src="js/cbpFWTabs.js"></script>
-									<script>
-										new CBPFWTabs( document.getElementById( 'tabs' ) );
-									</script>
-										
-												<script>
-													$(function() {
-														$('.tabs nav a').on('click', function() {
-														show_content($(this).index());
-														});
-														show_content(0);
-
-														function show_content(index) {
-														// Make the content visible
-																$('.tabs .context.visible').removeClass('visible');
-																$('.tabs .context:nth-of-type(' + (index + 1) + ')').addClass('visible');
-
-														// Set the tab to selected
-																$('.tabs nav.second a.selected').removeClass('selected');
-																$('.tabs navnav.second a:nth-of-type(' + (index + 1) + ')').addClass('selected');
-																	}
-																});
-												</script>		
-									</div>		
-									
-										<div class="clearfix"> </div>
-								</div>
-							</div>
-	<!-- end content -->
-	
-	<div class="clearfix"> </div>
-</div>
-		<div class="footer">
+<div class="footer">
 					<div class="col-md-3 cust">
 					</div>
 					<div class="col-md-2 abt">
@@ -411,7 +368,8 @@ mysql_close($db_handle);
 						<div class="our-left">
 							<h4>Location</h4>
 						</div>
-						<li><i class="add"> </i>B-211,Lane No:4<br/>
+						
+							<li><i class="add"> </i>B-211,Lane No:4<br/>
 													Sethi Nagar,<br/>
 													Ujjain,<br/>
 													Madhya Pradesh<br/>
@@ -421,9 +379,10 @@ mysql_close($db_handle);
 							<li><a href="abhijit.composer@gmail.com"><i class="mail"> </i>abhijit.composer@gmail.com </a></li>
 					</div>
 					<div class="clearfix"> </div>
-						<p>© 2018 Musical Instruments Portal| Design by  Mittal Parmar Bhatiya</a></p>
+						<p>© 2018 Musical Instruments Portal| Design by Parmar Mittal</a></p>
 			</div>
 </div>
+
 </div>
 			<!--content-->
 		</div>
@@ -439,7 +398,7 @@ mysql_close($db_handle);
 									<ul id="menu" >
 										
 										
-										 <li id="menu-academico" ><a href="#"> <span> Manage Category</span> </a>
+										  <li id="menu-academico" ><a href="#"> <span> Manage Category</span> </a>
 										 <ul id="menu-academico-sub" >
 										  <li><a href="add_cat.php">Add Category</a>
 										  <li><a href="update_delete_cat.php">Update/Delete category</a></li>
@@ -452,9 +411,8 @@ mysql_close($db_handle);
 										</ul>
 										</li>
 										</li>
-										 <li><a href="report.php"><span>Report</span></a></li>
+									<li><a href="report.php"><span>Report</span></a></li>
 									<li><a href="manage_feedback.php"><span>Manage Feedback</span></a></li>
-									
 									<li id="menu-academico-sub"><a href="#"><span>Manage Product</span></a>
 									<ul id="menu-academico-sub" >
 										  <li><a href="view_product.php">View/Add Product</a></li>
@@ -463,7 +421,8 @@ mysql_close($db_handle);
 									</li>
 									 <li><a href="academic_info.php"><span>Manage Academic Information</span></a> </li>
 									 <li><a href="candidate_data.php"><span>Manage Candidate Data</span></a> </li>
-										<li><a href="logout.php"><span>Log out</span></a> </li>
+									<li><a href="logout.php"><span>Log out</span></a> </li>
+									</ul>
 									
 								  </ul>
 								</div>
@@ -499,6 +458,7 @@ mysql_close($db_handle);
    <!-- real-time -->
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 	<script type="text/javascript">
+
 	$(function() {
 
 		// We use an inline data source in the example, usually data would
@@ -588,6 +548,7 @@ mysql_close($db_handle);
 <!-- /real-time -->
 <script src="js/jquery.fn.gantt.js"></script>
     <script>
+
 		$(function() {
 
 			"use strict";
@@ -703,6 +664,7 @@ mysql_close($db_handle);
 			prettyPrint();
 
 		});
+
     </script>
 		   <script src="js/menu_jquery.js"></script>
 </body>
